@@ -9,8 +9,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Handle standalone output for production
-  output: 'standalone',
   // Configure headers for better caching and security
   async headers() {
     return [
