@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { getFallbackTruthsOrDares } from '@/lib/fallback-data'
 
 export async function GET() {
   try {
@@ -20,16 +21,15 @@ export async function GET() {
         console.error(`Database connection attempt ${connectionAttempts} failed:`, dbError)
         
         if (connectionAttempts >= maxAttempts) {
-          console.error('Max connection attempts reached')
-          return NextResponse.json(
-            { 
-              error: 'Database connection failed', 
-              details: dbError instanceof Error ? dbError.message : 'Unknown error',
-              attempts: connectionAttempts,
-              databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing'
-            },
-            { status: 500 }
-          )
+          console.error('Max connection attempts reached, using fallback data')
+          const fallbackData = getFallbackTruthsOrDares()
+          console.log(`Returning ${fallbackData.length} fallback items`)
+          
+          return NextResponse.json({
+            data: fallbackData,
+            fallback: true,
+            message: 'Using fallback data due to database connection issues'
+          })
         }
         
         // Wait before retrying
@@ -45,18 +45,24 @@ export async function GET() {
     
     console.log(`Found ${truthsAndDares.length} truths and dares`)
     
-    return NextResponse.json(truthsAndDares)
+    return NextResponse.json({
+      data: truthsAndDares,
+      fallback: false,
+      message: 'Data loaded from database'
+    })
   } catch (error) {
     console.error('Error fetching truths and dares:', error)
-    return NextResponse.json(
-      { 
-        error: 'Failed to fetch truths and dares', 
-        details: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date().toISOString(),
-        databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing'
-      },
-      { status: 500 }
-    )
+    
+    // Use fallback data as last resort
+    const fallbackData = getFallbackTruthsOrDares()
+    console.log(`Using fallback data due to error: ${fallbackData.length} items`)
+    
+    return NextResponse.json({
+      data: fallbackData,
+      fallback: true,
+      message: 'Using fallback data due to server error',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    })
   } finally {
     await db.$disconnect()
   }

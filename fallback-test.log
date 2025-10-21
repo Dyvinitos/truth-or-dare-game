@@ -1,0 +1,84 @@
+
+> nextjs_tailwind_shadcn_ts@0.1.0 start
+> next start
+
+   ▲ Next.js 15.3.5
+   - Local:        http://localhost:3000
+   - Network:      http://21.0.9.127:3000
+
+ ✓ Starting...
+ ✓ Ready in 498ms
+Attempting to fetch truths and dares...
+DATABASE_URL: configured
+Database connection attempt 1 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Attempting to fetch truths and dares...
+DATABASE_URL: configured
+Database connection attempt 1 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Database connection attempt 2 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Database connection attempt 2 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Database connection attempt 3 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Max connection attempts reached, using fallback data
+Returning 40 fallback items
+Database connection attempt 3 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Max connection attempts reached, using fallback data
+Returning 40 fallback items
+Attempting to fetch truths and dares...
+DATABASE_URL: configured
+Database connection attempt 1 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Database connection attempt 2 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Database connection attempt 3 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}
+Max connection attempts reached, using fallback data
+Returning 40 fallback items
+Attempting to fetch truths and dares...
+DATABASE_URL: configured
+Database connection attempt 1 failed: Error [PrismaClientInitializationError]: Error querying the database: Error code 14: Unable to open the database file
+    at async h (.next/server/app/api/truths-or-dares/route.js:1:3156) {
+  clientVersion: '6.17.1',
+  errorCode: undefined,
+  retryable: undefined
+}

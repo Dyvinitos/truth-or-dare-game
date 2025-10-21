@@ -23,8 +23,19 @@ export function useTruthsOrDares() {
         throw new Error(errorData.error || errorData.details || `HTTP ${response.status}: Failed to fetch data`)
       }
       const result = await response.json()
-      setData(result)
+      
+      // Handle both old format (direct array) and new format (object with data property)
+      const data = Array.isArray(result) ? result : result.data
+      const isFallback = result.fallback || false
+      const message = result.message || ''
+      
+      setData(data)
       setError(null)
+      
+      // Log if we're using fallback data
+      if (isFallback) {
+        console.log('Using fallback data:', message)
+      }
     } catch (err) {
       console.error('Fetch error:', err)
       setError(err instanceof Error ? err.message : 'An error occurred')
