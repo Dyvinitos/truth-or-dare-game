@@ -8,7 +8,9 @@ export async function GET() {
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV,
       databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing',
-      database: 'unknown'
+      database: 'unknown',
+      workingDirectory: process.cwd(),
+      nodeVersion: process.version
     }
 
     // Test database connection
@@ -18,10 +20,23 @@ export async function GET() {
       const count = await db.truthOrDare.count()
       health.database = `connected (${count} items)`
       
+      // Test a simple query
+      const firstItem = await db.truthOrDare.findFirst()
+      health.firstItem = firstItem ? {
+        id: firstItem.id,
+        type: firstItem.type,
+        contentPreview: firstItem.content.substring(0, 50) + '...'
+      } : null
+      
       await db.$disconnect()
     } catch (dbError) {
       health.database = `connection failed: ${dbError instanceof Error ? dbError.message : 'Unknown error'}`
       health.status = 'error'
+      health.errorDetails = {
+        name: dbError instanceof Error ? dbError.name : 'Unknown',
+        message: dbError instanceof Error ? dbError.message : 'Unknown error',
+        stack: dbError instanceof Error ? dbError.stack : undefined
+      }
     }
 
     return NextResponse.json(health)

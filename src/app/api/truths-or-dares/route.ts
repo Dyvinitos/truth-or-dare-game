@@ -4,17 +4,37 @@ import { db } from '@/lib/db'
 export async function GET() {
   try {
     console.log('Attempting to fetch truths and dares...')
+    console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'configured' : 'missing')
     
-    // Test database connection
-    try {
-      await db.$connect()
-      console.log('Database connected successfully')
-    } catch (dbError) {
-      console.error('Database connection failed:', dbError)
-      return NextResponse.json(
-        { error: 'Database connection failed', details: dbError instanceof Error ? dbError.message : 'Unknown error' },
-        { status: 500 }
-      )
+    // Test database connection with retry logic
+    let connectionAttempts = 0
+    const maxAttempts = 3
+    
+    while (connectionAttempts < maxAttempts) {
+      try {
+        await db.$connect()
+        console.log('Database connected successfully')
+        break
+      } catch (dbError) {
+        connectionAttempts++
+        console.error(`Database connection attempt ${connectionAttempts} failed:`, dbError)
+        
+        if (connectionAttempts >= maxAttempts) {
+          console.error('Max connection attempts reached')
+          return NextResponse.json(
+            { 
+              error: 'Database connection failed', 
+              details: dbError instanceof Error ? dbError.message : 'Unknown error',
+              attempts: connectionAttempts,
+              databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing'
+            },
+            { status: 500 }
+          )
+        }
+        
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000))
+      }
     }
     
     const truthsAndDares = await db.truthOrDare.findMany({
@@ -32,7 +52,8 @@ export async function GET() {
       { 
         error: 'Failed to fetch truths and dares', 
         details: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        databaseUrl: process.env.DATABASE_URL ? 'configured' : 'missing'
       },
       { status: 500 }
     )
