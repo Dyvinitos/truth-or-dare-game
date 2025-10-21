@@ -19,12 +19,14 @@ export function useTruthsOrDares() {
       setLoading(true)
       const response = await fetch('/api/truths-or-dares')
       if (!response.ok) {
-        throw new Error('Failed to fetch data')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || errorData.details || `HTTP ${response.status}: Failed to fetch data`)
       }
       const result = await response.json()
       setData(result)
       setError(null)
     } catch (err) {
+      console.error('Fetch error:', err)
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)

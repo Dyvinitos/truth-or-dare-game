@@ -14,5 +14,9 @@ npx prisma generate
 # Push database schema
 npx prisma db push
 
+# Always seed the database to ensure there's data
+echo "Seeding database with initial data..."
+npx tsx prisma/seed.ts
+
 # Start the application
 npm start
