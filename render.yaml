@@ -1,0 +1,26 @@
+services:
+  # Web Service
+  - type: web
+    name: truth-or-dare-game
+    env: node
+    plan: free
+    buildCommand: "npm run build"
+    startCommand: "bash scripts/render-start.sh"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:/app/db/custom.db
+    buildFilter:
+      paths:
+        - src/**
+        - public/**
+        - package.json
+        - package-lock.json
+        - tsconfig.json
+        - next.config.ts
+        - tailwind.config.ts
+        - postcss.config.mjs
+        - prisma/schema.prisma
+        - scripts/**
+    autoDeploy: true
